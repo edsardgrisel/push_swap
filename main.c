@@ -6,7 +6,7 @@
 /*   By: edsardgrisel <edsardgrisel@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 14:33:25 by edsardgrise       #+#    #+#             */
-/*   Updated: 2025/05/21 21:12:52 by edsardgrise      ###   ########.fr       */
+/*   Updated: 2025/05/21 21:23:39 by edsardgrise      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*allocate_content(char *content)
 {
-	content = ft_calloc(1, sizeof(int));
+	content = malloc(1, sizeof(int));
 	if (content == NULL)
 		return (NULL);
 	*content = ft_atoi(content);
@@ -31,13 +31,18 @@ t_list	*create_stack_a(int argc, char *argv[])
 	content = allocate_content(argv[i++]);
 	if (content == NULL)
 		return (NULL);
-	stack_a = ft_lstnew(&content);
+	stack_a = ft_lstnew(content);
 	if (stack_a == NULL)
 		return (free(content), NULL);
 
 	while(i < argc - 1)
 	{
-		content = ft_atoi(argv[i++]);
+		content = allocate_content(argv[i++]);
+		if (content == NULL)
+			return (NULL);
+		stack_a = ft_lstnew(content);
+		if (stack_a == NULL)
+			return (free(content), NULL);
 		ft_lstadd_back(&stack_a, ft_lstnew(&content));
 	}
 	return (stack_a);
